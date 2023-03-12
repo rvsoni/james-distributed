@@ -1,0 +1,68 @@
+version: '3'
+
+services:
+
+  opensearch:
+    image: opensearchproject/opensearch:2.1.0
+    environment:
+      - discovery.type=single-node
+      - DISABLE_INSTALL_DEMO_CONFIG=true
+      - DISABLE_SECURITY_PLUGIN=true
+    volumes:
+      - ./opensearch-data:/usr/share/opensearch/data
+    networks:
+      - james-network
+
+  cassandra:
+    image: cassandra:3.11.10
+    ports:
+      - "9042:9042"
+    volumes:
+      - ./cassandra-data:/var/lib/cassandra
+    networks:
+      - james-network
+
+  tika:
+    image: apache/tika:1.28.2
+    networks:
+      - james-network
+
+  rabbitmq:
+    image: rabbitmq:3.9.18-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - james-network
+
+  s3:
+    image: zenko/cloudserver:8.2.6
+    container_name: s3.docker.test
+    environment:
+      - SCALITY_ACCESS_KEY_ID=accessKey1
+      - SCALITY_SECRET_ACCESS_KEY=secretKey1
+      - S3BACKEND=mem
+      - LOG_LEVEL=trace
+      - REMOTE_MANAGEMENT_DISABLE=1
+    ports:
+      - 8000:8000
+      - 9990:9990
+      - 9991:9991
+    networks:
+      - james-network
+
+  elasticsearch:
+    image: elasticsearch:7.12.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+    networks:
+      - james-network
+
+
+networks:
+  james-network:
+
+
+
+  

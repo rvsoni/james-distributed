@@ -1,0 +1,22 @@
+PUT http://localhost:8080/domains/databees.in
+
+###
+GET http://127.0.0.1:8080/domains/databees.in
+
+#####
+PUT http://127.0.0.1:8080/users/ravi.soni@databees.in
+content-type: application/json
+
+{
+    "password":"password"
+}
+
+###
+PUT http://127.0.0.1:8080/users/soni.ravi@databees.in
+content-type: application/json
+
+{
+    "password":"password"
+}
+###
+GET http://127.0.0.1:8080/users

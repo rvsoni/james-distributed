@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+
+  james:
+    image: apache/james:distributed-latest
+    container_name: james
+    hostname: mx.databees.in
+    volumes:
+      - ./conf:/root/conf
+      - ./logs:/logs
+    ports:
+      - "8080:8080"
+      - "25:25"
+      - "110:110"
+      - "143:143"
+      - "465:465"
+      - "587:587"
+      - "993:993"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536 # maximum number of open files for the OpenSearch user, set to at least 65536 on modern systems
+        hard: 65536
+    networks:
+      - james-network
+
+networks:
+  james-network:
